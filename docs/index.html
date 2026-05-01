@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasa de Usura · Colombia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0B0F0E;
+    --surface:   #131918;
+    --border:    #1E2825;
+    --gold:      #C9A84C;
+    --gold-dim:  #7A6230;
+    --teal:      #3DBFA0;
+    --teal-dim:  #1E6B58;
+    --text:      #E8E4DC;
+    --muted:     #6B7570;
+    --danger:    #C94C4C;
+    --ff-serif:  'DM Serif Display', Georgia, serif;
+    --ff-sans:   'Instrument Sans', sans-serif;
+    --ff-mono:   'DM Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--ff-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Grid noise overlay ─────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: .35;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Nav ────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    background: rgba(11,15,14,.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand {
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    letter-spacing: .12em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: .82rem;
+    letter-spacing: .06em;
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-gh {
+    display: flex; align-items: center; gap: .5rem;
+    font-family: var(--ff-mono);
+    font-size: .75rem;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: .3rem .75rem;
+    border-radius: 4px;
+    transition: border-color .2s, color .2s;
+  }
+  .nav-gh:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+  /* ── Hero ───────────────────────────────────────── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 100px 2.5rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .2em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--teal);
+  }
+
+  h1 {
+    font-family: var(--ff-serif);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 1.05;
+    letter-spacing: -.02em;
+    color: var(--text);
+    margin-bottom: 1.25rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 520px;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .75rem 1.75rem;
+    border-radius: 4px;
+    font-family: var(--ff-sans);
+    font-size: .88rem;
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-decoration: none;
+    transition: all .2s;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--gold);
+    color: #0B0F0E;
+    border: 1px solid var(--gold);
+  }
+  .btn-primary:hover {
+    background: #E0BD6A;
+    border-color: #E0BD6A;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    border-color: var(--muted);
+  }
+
+  /* ── Ticker strip ───────────────────────────────── */
+  .ticker {
+    position: absolute; bottom: 2.5rem; left: 0; right: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: .6rem 0;
+    overflow: hidden;
+    z-index: 2;
+  }
+  .ticker-inner {
+    display: flex; gap: 4rem;
+    white-space: nowrap;
+    animation: ticker-scroll 28s linear infinite;
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
+  .ticker-inner span { color: var(--teal); }
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── Stats row ──────────────────────────────────── */
+  .stats {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .stat-card {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background .25s;
+  }
+  .stat-card:hover { background: var(--surface); }
+  .stat-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .3s;
+  }
+  .stat-card:hover::after { transform: scaleX(1); }
+
+  .stat-label {
+    font-family: var(--ff-mono);
+    font-size: .68rem;
+    letter-spacing: .14em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+
+  .stat-value {
+    font-family: var(--ff-serif);
+    font-size: 2.6rem;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-value.up   { color: var(--teal); }
+  .stat-value.down { color: var(--danger); }
+
+  .stat-delta {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    color: var(--muted);
+    margin-top: .5rem;
+  }
+
+  /* ── Sections ───────────────────────────────────── */
+  section {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 2.5rem;
+  }
+
+  .section-label {
+    font-family: var(--ff-mono);
+    font-size: .7rem;
+    letter-spacing: .18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: var(--ff-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+
+  /* ── Formula box ────────────────────────────────── */
+  .formula-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .formula-grid { grid-template-columns: 1fr; }
+  }
+
+  .formula-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .formula-card .tag {
+    font-family: var(--ff-mono);
+    font-size: .65rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+
+  .formula-card .formula {
+    font-family: var(--ff-mono);
+    font-size: .9rem;
+    color: var(--text);
+    background: rgba(0,0,0,.3);
+    padding: .85rem 1rem;
+    border-radius: 4px;
+    border-left: 2px solid var(--gold);
+    margin-top: .75rem;
+    line-height: 1.7;
+  }
+
+  /* ── Pipeline steps ─────────────────────────────── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 2.5rem;
+  }
+
+  .step {
+    padding: 2rem 1.5rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background .2s;
+  }
+  .step:last-child { border-right: none; }
+  .step:hover { background: var(--surface); }
+
+  .step-num {
+    font-family: var(--ff-mono);
+    font-size: .68rem;
+    color: var(--gold-dim);
+    letter-spacing: .1em;
+    margin-bottom: .75rem;
+  }
+
+  .step-title {
+    font-weight: 600;
+    font-size: .95rem;
+    margin-bottom: .4rem;
+    color: var(--text);
+  }
+
+  .step-desc {
+    font-size: .82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── Code block ─────────────────────────────────── */
+  .code-block {
+    background: #070A09;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+
+  .code-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .code-dots { display: flex; gap: .4rem; }
+  .code-dots span {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: block;
+  }
+  .code-dots span:nth-child(1) { background: #FF5F57; }
+  .code-dots span:nth-child(2) { background: #FEBC2E; }
+  .code-dots span:nth-child(3) { background: #28C840; }
+
+  .code-filename {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    color: var(--muted);
+  }
+
+  pre {
+    padding: 1.5rem;
+    overflow-x: auto;
+    font-family: var(--ff-mono);
+    font-size: .8rem;
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .kw  { color: #C594C5; }
+  .fn  { color: #6699CC; }
+  .str { color: #99C794; }
+  .cm  { color: #5C6B66; font-style: italic; }
+  .num { color: var(--gold); }
+  .var { color: var(--teal); }
+
+  /* ── Footer ─────────────────────────────────────── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-brand {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    color: var(--muted);
+    letter-spacing: .1em;
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a {
+    font-size: .78rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color .2s;
+  }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ── Animations ─────────────────────────────────── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow { animation: fade-up .6s ease both; }
+  h1            { animation: fade-up .6s .1s ease both; }
+  .hero-sub     { animation: fade-up .6s .2s ease both; }
+  .hero-actions { animation: fade-up .6s .3s ease both; }
+
+  /* ── Responsive nav ─────────────────────────────── */
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero { padding-top: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">SFC · Usura</span>
+  <ul class="nav-links">
+    <li><a href="#metodologia">Metodología</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#codigo">Código</a></li>
+  </ul>
+  <a href="https://github.com/tu-usuario/tasa-usura" class="nav-gh">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.4.6.1.82-.26.82-.57v-2c-3.34.72-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.08-.74.08-.72.08-.72 1.2.08 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.3.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.3-1.23 3.3-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.92 1.23 3.22 0 4.6-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.3c0 .32.2.68.82.56C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+    </svg>
+    GitHub
+  </a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Colombia · Sistema Financiero · SFC</p>
+  <h1>Tasa de<br><em>Usura</em></h1>
+  <p class="hero-sub">
+    Metodología de proyección de la Tasa de Interés Bancario Corriente (TIBC)
+    y la tasa de usura, usando desembolsos ponderados del sistema financiero colombiano.
+  </p>
+  <div class="hero-actions">
+    <a href="#metodologia" class="btn btn-primary">Ver metodología</a>
+    <a href="https://github.com/tu-usuario/tasa-usura" class="btn btn-ghost">
+      Ver repositorio →
+    </a>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span>TIBC PROYECTADA</span> · Consumo y Ordinario ·
+      <span>USURA = TIBC × 1.5</span> · Fuente: datos.gov.co ·
+      <span>TIBC PROYECTADA</span> · Consumo y Ordinario ·
+      <span>USURA = TIBC × 1.5</span> · Fuente: datos.gov.co ·
+      <span>TIBC PROYECTADA</span> · Consumo y Ordinario ·
+      <span>USURA = TIBC × 1.5</span> · Fuente: datos.gov.co ·
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-label">Modalidad</div>
+    <div class="stat-value" style="font-size:1.6rem; margin-top:.25rem;">Consumo</div>
+    <div class="stat-delta">y Ordinario · SFC</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Factores de ajuste</div>
+    <div class="stat-value">5</div>
+    <div class="stat-delta">Entidad · Producto · Monto · Plazo · Tipo</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Multiplicador usura</div>
+    <div class="stat-value up">×1.5</div>
+    <div class="stat-delta">Definido por la SFC</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Fuente de datos</div>
+    <div class="stat-value" style="font-size:1.4rem; margin-top:.25rem;">API</div>
+    <div class="stat-delta">datos.gov.co · Actualización mensual</div>
+  </div>
+</div>
+
+<!-- METODOLOGÍA -->
+<section id="metodologia">
+  <p class="section-label">01 · Metodología</p>
+  <h2>¿Cómo se calcula<br>la tasa de usura?</h2>
+
+  <div class="formula-grid">
+    <div class="formula-card">
+      <div class="tag">TIBC Proyectada</div>
+      <p style="font-size:.88rem; color:var(--muted); line-height:1.6;">
+        Promedio ponderado de la tasa efectiva de los desembolsos,
+        ajustado por el factor compuesto de cada operación.
+      </p>
+      <div class="formula">
+        TIBC_p = Σ(Tasa × Monto × Factor)<br>
+                 ─────────────────────────<br>
+                     Σ(Monto × Factor)
+      </div>
+    </div>
+    <div class="formula-card">
+      <div class="tag">Usura Proyectada</div>
+      <p style="font-size:.88rem; color:var(--muted); line-height:1.6;">
+        La tasa de usura es 1.5 veces la TIBC, tanto en la
+        proyección como en el valor certificado por la SFC.
+      </p>
+      <div class="formula">
+        Usura_p  = TIBC_p × 1.5<br>
+        Usura_r  = TIBC_r × 1.5<br>
+        <br>
+        ΔTIBC   = TIBC_p − TIBC_r
+      </div>
+    </div>
+    <div class="formula-card">
+      <div class="tag">Factor Compuesto</div>
+      <p style="font-size:.88rem; color:var(--muted); line-height:1.6;">
+        Producto de cinco factores individuales. Si un factor no aplica
+        se trata como neutro (= 1).
+      </p>
+      <div class="formula">
+        factor_a = f1 × f2 × f3 × f4 × f5<br>
+        <br>
+        fᵢ = 1 si no hay factor asignado
+      </div>
+    </div>
+    <div class="formula-card">
+      <div class="tag">Fuente TIBC Real</div>
+      <p style="font-size:.88rem; color:var(--muted); line-height:1.6;">
+        La TIBC certificada se consulta automáticamente desde la
+        API abierta de datos.gov.co en cada ejecución.
+      </p>
+      <div class="formula">
+        GET datos.gov.co/resource/<br>
+        pare-7x5i.json<br>
+        WHERE modalidad = 'CONSUMO...'
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline" style="padding-top:0;">
+  <p class="section-label">02 · Pipeline</p>
+  <h2>Proceso de extremo<br>a extremo</h2>
+
+  <div class="pipeline">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Extracción</div>
+      <div class="step-desc">Lee desembolsos desde Parquet y fechas de corte desde Excel.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Factores</div>
+      <div class="step-desc">Carga 5 hojas de factores y los aplica por join en data.table.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">API SFC</div>
+      <div class="step-desc">Consulta la TIBC real desde datos.gov.co con validación HTTP.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Cálculo</div>
+      <div class="step-desc">Calcula TIBC proyectada, usura y deltas por corte.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-title">Exportación</div>
+      <div class="step-desc">Guarda resultados en Excel y logs de incidencias.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓDIGO -->
+<section id="codigo" style="padding-top:0;">
+  <p class="section-label">03 · Código</p>
+  <h2>Extracto del script<br>principal</h2>
+
+  <div class="code-block">
+    <div class="code-header">
+      <div class="code-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <span class="code-filename">R/04__Calculo_tasa_usura.R</span>
+      <span></span>
+    </div>
+    <pre><span class="cm"># Carga vectorizada de factores — DRY</span>
+<span class="var">factores</span> <span class="kw">&lt;-</span> <span class="fn">lapply</span>(<span class="fn">seq_along</span>(COLS_JOIN_FACTORES), <span class="kw">function</span>(i) {
+  <span class="fn">read_excel</span>(RUTA_FACTORES, sheet = i) |&gt; <span class="fn">setDT</span>()
+})
+
+<span class="kw">for</span> (i <span class="kw">in</span> <span class="fn">seq_along</span>(<span class="var">factores</span>)) {
+  <span class="var">col_join</span>  <span class="kw">&lt;-</span> COLS_JOIN_FACTORES[i]
+  <span class="var">col_nueva</span> <span class="kw">&lt;-</span> <span class="fn">paste0</span>(<span class="str">"factor_"</span>, i)
+  <span class="var">bd</span>[<span class="var">factores</span>[[i]], <span class="fn">on</span> = (<span class="var">col_join</span>), (<span class="var">col_nueva</span>) := i.factor]
+}
+
+<span class="cm"># Factor compuesto — NA tratado como neutro</span>
+<span class="var">bd</span>[, <span class="var">factor_a</span> := <span class="fn">fcoalesce</span>(<span class="var">factor_1</span>, <span class="num">1</span>) *
+               <span class="fn">fcoalesce</span>(<span class="var">factor_2</span>, <span class="num">1</span>) *
+               <span class="fn">fcoalesce</span>(<span class="var">factor_3</span>, <span class="num">1</span>) *
+               <span class="fn">fcoalesce</span>(<span class="var">factor_4</span>, <span class="num">1</span>) *
+               <span class="fn">fcoalesce</span>(<span class="var">factor_5</span>, <span class="num">1</span>)]
+
+<span class="cm"># TIBC proyectada por corte</span>
+<span class="var">calculos</span> <span class="kw">&lt;-</span> <span class="var">bd</span>[, .(
+  <span class="var">TIBC_p</span> = <span class="fn">sum</span>(<span class="var">tasa_efectiva</span> * <span class="var">montos</span> * <span class="var">factor_a</span>, na.rm = <span class="num">TRUE</span>) /
+            <span class="fn">sum</span>(<span class="var">montos</span> * <span class="var">factor_a</span>,          na.rm = <span class="num">TRUE</span>)
+), by = .(<span class="var">corte</span>)]
+
+<span class="var">calculos</span>[, <span class="var">USURA_p</span> := <span class="var">TIBC_p</span> * <span class="num">1.5</span>]</pre>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">TASA-USURA · Colombia · SFC</span>
+  <div class="footer-links">
+    <a href="#metodologia">Metodología</a>
+    <a href="https://www.datos.gov.co/resource/pare-7x5i.json">API datos.gov.co</a>
+    <a href="https://github.com/tu-usuario/tasa-usura">GitHub</a>
+  </div>
+</footer>
+
+</body>
+</html>
