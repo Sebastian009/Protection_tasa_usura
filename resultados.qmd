@@ -1,0 +1,54 @@
+---
+title: "Resultados"
+---
+
+> Los resultados se generan ejecutando `R/04__Calculo_tasa_usura.R` y exportando `Salida/salida.xlsx`.
+
+## Últimos resultados disponibles
+
+```{r}
+#| echo: false
+#| warning: false
+#| eval: false
+
+library(data.table)
+library(openxlsx)
+library(plotly)
+
+# Leer salida generada por el script principal
+calculos <- setDT(read.xlsx("Salida/salida.xlsx"))
+calculos[, corte := as.Date(corte, origin = "1899-12-30")]
+
+# Gráfico comparativo TIBC proyectada vs real
+plot_ly(calculos, x = ~corte) |>
+  add_lines(y = ~TIBC_p * 100, name = "TIBC Proyectada", line = list(color = "#E8C547", width = 2)) |>
+  add_lines(y = ~TIBC_r * 100, name = "TIBC Real (SFC)",  line = list(color = "#4ECDC4", width = 2, dash = "dash")) |>
+  layout(
+    title = "TIBC: Proyectada vs Real",
+    xaxis = list(title = "Corte"),
+    yaxis = list(title = "Tasa (%)"),
+    paper_bgcolor = "transparent",
+    plot_bgcolor  = "transparent"
+  )
+```
+
+## Tabla de resultados
+
+```{r}
+#| echo: false
+#| eval: false
+
+DT::datatable(
+  calculos[, .(
+    Corte       = format(corte, "%b %Y"),
+    `TIBC Proy` = scales::percent(TIBC_p, accuracy = 0.01),
+    `TIBC Real` = scales::percent(TIBC_r, accuracy = 0.01),
+    `Usura Proy`= scales::percent(USURA_p, accuracy = 0.01),
+    `Usura Real`= scales::percent(USURA_r, accuracy = 0.01),
+    `Δ TIBC`    = scales::percent(delta_TIBC,  accuracy = 0.001),
+    `Δ Usura`   = scales::percent(delta_USURA, accuracy = 0.001)
+  )],
+  options = list(pageLength = 10, dom = "tp"),
+  rownames = FALSE
+)
+```

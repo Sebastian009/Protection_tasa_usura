@@ -1,0 +1,46 @@
+---
+title: "Metodología"
+---
+
+## ¿Qué es la Tasa de Usura?
+
+La **tasa de usura** es el límite máximo que pueden cobrar las entidades financieras en Colombia por un crédito. Está definida por la Superintendencia Financiera de Colombia (SFC) como **1.5 veces la Tasa de Interés Bancario Corriente (TIBC)**.
+
+## Proceso de cálculo
+
+### 1. Fuente de datos
+
+- **Desembolsos:** Base interna con información de créditos de consumo y ordinario desembolsados por entidades del sistema financiero.
+- **TIBC real:** Consultada directamente desde [datos.gov.co](https://www.datos.gov.co/resource/pare-7x5i.json) vía API.
+
+### 2. Factores de ajuste
+
+Cada desembolso recibe un factor compuesto `factor_a` que ajusta su ponderación según cinco dimensiones:
+
+| Factor | Dimensión |
+|--------|-----------|
+| Factor 1 | Entidad financiera |
+| Factor 2 | Producto de crédito |
+| Factor 3 | Rango de monto desembolsado |
+| Factor 4 | Plazo del crédito |
+| Factor 5 | Tipo de tasa |
+
+### 3. TIBC proyectada
+
+$$
+TIBC_p = \frac{\sum (Tasa_i \times Monto_i \times Factor_i)}{\sum (Monto_i \times Factor_i)}
+$$
+
+### 4. Usura proyectada
+
+$$
+Usura_p = TIBC_p \times 1.5
+$$
+
+### 5. Comparación con valor real
+
+Se calcula el delta entre el valor proyectado y el certificado por la SFC:
+
+$$
+\Delta_{TIBC} = TIBC_p - TIBC_r \qquad \Delta_{Usura} = Usura_p - Usura_r
+$$

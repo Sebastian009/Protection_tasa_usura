@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Tasa de Usura"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Inicio
+      - href: metodologia.qmd
+        text: Metodología
+      - href: resultados.qmd
+        text: Resultados
+    right:
+      - icon: github
+        href: https://github.com/tu-usuario/tasa-usura
+
+format:
+  html:
+    theme: none
+    css: docs/styles.css
+    toc: false
